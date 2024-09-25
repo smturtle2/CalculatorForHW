@@ -117,8 +117,14 @@ class Calculator:
         button.grid(row=0, column=3, sticky=tk.NSEW)
 
     def sqrt(self):
-        self.current_expression = str(eval(f"{self.current_expression}**0.5"))
-        self.update_label()
+        if "Error" in self.current_expression:
+            return
+        try:
+            self.current_expression = str(eval(f"{self.current_expression}**0.5"))
+        except Exception as e:
+            self.current_expression = "Error"
+        finally:
+            self.update_label()
 
     def create_sqrt_button(self):
         button = tk.Button(self.buttons_frame, text="\u221ax", bg=OFF_WHITE, fg=LABEL_COLOR, font=DEFAULT_FONT_STYLE,
