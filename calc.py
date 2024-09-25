@@ -54,7 +54,7 @@ class Calculator:
     def create_special_buttons(self):
         self.create_clear_button()
         self.create_equals_button()
-        self.create_square_button()
+        self.create_power_button()
         self.create_sqrt_button()
 
     def create_display_labels(self):
@@ -111,14 +111,10 @@ class Calculator:
                            borderwidth=0, command=self.clear)
         button.grid(row=0, column=1, sticky=tk.NSEW)
 
-    def square(self):
-        self.current_expression = str(eval(f"{self.current_expression}**2"))
-        self.update_label()
-
-    def create_square_button(self):
-        button = tk.Button(self.buttons_frame, text="x\u00b2", bg=OFF_WHITE, fg=LABEL_COLOR, font=DEFAULT_FONT_STYLE,
-                           borderwidth=0, command=self.square)
-        button.grid(row=0, column=2, sticky=tk.NSEW)
+    def create_power_button(self):
+        button = tk.Button(self.buttons_frame, text="x\u207f", bg=OFF_WHITE, fg=LABEL_COLOR, font=DEFAULT_FONT_STYLE,
+                           borderwidth=0, command=lambda: self.append_operator("**"))
+        button.grid(row=0, column=3, sticky=tk.NSEW)
 
     def sqrt(self):
         self.current_expression = str(eval(f"{self.current_expression}**0.5"))
@@ -127,7 +123,7 @@ class Calculator:
     def create_sqrt_button(self):
         button = tk.Button(self.buttons_frame, text="\u221ax", bg=OFF_WHITE, fg=LABEL_COLOR, font=DEFAULT_FONT_STYLE,
                            borderwidth=0, command=self.sqrt)
-        button.grid(row=0, column=3, sticky=tk.NSEW)
+        button.grid(row=0, column=2, sticky=tk.NSEW)
 
     def evaluate(self):
         if "Error" in self.current_expression:
@@ -154,7 +150,7 @@ class Calculator:
         return frame
 
     def update_total_label(self):
-        expression = self.total_expression
+        expression = self.total_expression.replace("**", "^")
         for operator, symbol in self.operations.items():
             expression = expression.replace(operator, f' {symbol} ')
         self.total_label.config(text=expression)
