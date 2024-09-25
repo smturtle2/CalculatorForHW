@@ -74,6 +74,7 @@ class Calculator:
         return frame
 
     def add_to_expression(self, value):
+        self.handle_error()
         self.current_expression += str(value)
         self.update_label()
 
@@ -84,6 +85,7 @@ class Calculator:
             button.grid(row=grid_value[0], column=grid_value[1], sticky=tk.NSEW)
 
     def append_operator(self, operator):
+        self.handle_error()
         self.current_expression += operator
         self.total_expression += self.current_expression
         self.current_expression = ""
@@ -128,6 +130,8 @@ class Calculator:
         button.grid(row=0, column=3, sticky=tk.NSEW)
 
     def evaluate(self):
+        if "Error" in self.current_expression:
+            return
         self.total_expression += self.current_expression
         self.update_total_label()
         try:
@@ -157,6 +161,10 @@ class Calculator:
 
     def update_label(self):
         self.label.config(text=self.current_expression[:11])
+    
+    def handle_error(self):
+        if "Error" in self.current_expression:
+            self.clear()
 
     def run(self):
         self.window.mainloop()
